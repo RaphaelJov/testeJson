@@ -12,7 +12,7 @@
     <script>
         async function carregarCSV() {
             try {
-                const url = "https://drive.google.com/file/d/1msme62AMAHtDrOc8sg7iUTpT-X0g5EEm/view?usp=sharing"; // Insira o link correto
+                const url = "https://drive.google.com/uc?export=download&id=1msme62AMAHtDrOc8sg7iUTpT-X0g5EEm"; // Insira o link correto
                 const resposta = await fetch(url);
                 const texto = await resposta.text();
                 const linhas = texto.split("\n").slice(1); // Ignora o cabeçalho
