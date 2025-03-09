@@ -3,33 +3,30 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Carregar CSV</title>
+    <title>Carregar JSON Externo</title>
 </head>
 <body>
     <h2>Lista de Pessoas</h2>
     <ul id="lista"></ul>
 
     <script>
-        async function carregarCSV() {
+        async function carregarDados() {
             try {
-                const url = "https://drive.google.com/uc?export=download&id=1msme62AMAHtDrOc8sg7iUTpT-X0g5EEm"; // Insira o link correto
-                const resposta = await fetch(url);
-                const texto = await resposta.text();
-                const linhas = texto.split("\n").slice(1); // Ignora o cabeçalho
-    
+                const resposta = await fetch("dados.json"); // Carrega o arquivo JSON
+                const dados = await resposta.json(); // Converte para objeto JavaScript
+                
                 const lista = document.getElementById("lista");
-                linhas.forEach(linha => {
-                    const [nome, idade] = linha.split(",");
+                dados.forEach(pessoa => {
                     const item = document.createElement("li");
-                    item.textContent = `${nome} - ${idade} anos`;
+                    item.textContent = `${pessoa.nome} - ${pessoa.idade} anos`;
                     lista.appendChild(item);
                 });
             } catch (erro) {
                 console.error("Erro ao carregar os dados:", erro);
             }
         }
-    
-        carregarCSV();
+
+        carregarDados();
     </script>
 </body>
 </html>
