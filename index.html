@@ -3,30 +3,46 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Carregar JSON Externo</title>
+    <title>Exibir CSV Local</title>
+    <style>
+        table { width: 100%; border-collapse: collapse; }
+        th, td { border: 1px solid black; padding: 8px; text-align: left; }
+        th { background-color: #ddd; }
+    </style>
 </head>
 <body>
-    <h2>Lista de Pessoas</h2>
-    <ul id="lista"></ul>
+    <h2>Dados do CSV</h2>
+    <table id="csvTable"></table>
 
     <script>
-        async function carregarDados() {
-            try {
-                const resposta = await fetch("dados.json"); // Carrega o arquivo JSON
-                const dados = await resposta.json(); // Converte para objeto JavaScript
-                
-                const lista = document.getElementById("lista");
-                dados.forEach(pessoa => {
-                    const item = document.createElement("li");
-                    item.textContent = `${pessoa.nome} - ${pessoa.idade} anos`;
-                    lista.appendChild(item);
-                });
-            } catch (erro) {
-                console.error("Erro ao carregar os dados:", erro);
-            }
+        async function fetchCSV() {
+            const response = await fetch("dados.csv"); // Aqui ele busca o arquivo local
+            const csvText = await response.text();
+            displayCSV(csvText);
         }
 
-        carregarDados();
+        function displayCSV(csvText) {
+            const rows = csvText.split("\n").map(row => row.split(","));
+            let tableHTML = "<thead><tr>";
+
+            rows[0].forEach(header => {
+                tableHTML += `<th>${header.trim()}</th>`;
+            });
+            tableHTML += "</tr></thead><tbody>";
+
+            for (let i = 1; i < rows.length; i++) {
+                tableHTML += "<tr>";
+                rows[i].forEach(cell => {
+                    tableHTML += `<td>${cell.trim()}</td>`;
+                });
+                tableHTML += "</tr>";
+            }
+            tableHTML += "</tbody>";
+
+            document.getElementById("csvTable").innerHTML = tableHTML;
+        }
+
+        fetchCSV(); // Chama a função ao carregar a página
     </script>
 </body>
 </html>
