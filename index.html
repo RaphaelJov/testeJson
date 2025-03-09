@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Carregar CSV</title>
+</head>
+<body>
+    <h2>Lista de Pessoas</h2>
+    <ul id="lista"></ul>
+
+    <script>
+        async function carregarCSV() {
+            try {
+                const url = "https://drive.google.com/file/d/1msme62AMAHtDrOc8sg7iUTpT-X0g5EEm/view?usp=sharing"; // Insira o link correto
+                const resposta = await fetch(url);
+                const texto = await resposta.text();
+                const linhas = texto.split("\n").slice(1); // Ignora o cabeçalho
+    
+                const lista = document.getElementById("lista");
+                linhas.forEach(linha => {
+                    const [nome, idade] = linha.split(",");
+                    const item = document.createElement("li");
+                    item.textContent = `${nome} - ${idade} anos`;
+                    lista.appendChild(item);
+                });
+            } catch (erro) {
+                console.error("Erro ao carregar os dados:", erro);
+            }
+        }
+    
+        carregarCSV();
+    </script>
+</body>
+</html>
